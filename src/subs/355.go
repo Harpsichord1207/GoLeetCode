@@ -1,6 +1,9 @@
 package subs
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 type Twitter struct {
 	follows map[int]map[int]bool
@@ -31,31 +34,12 @@ func (t *Twitter) PostTweet(userId int, tweetId int)  {
 }
 
 func mergeSlice(t *Twitter, slice1 []int, slice2 []int) []int {
-	l1 := len(slice1) - 1
-	l2 := len(slice2) - 1
-	var res []int
-	for {
-		if l1 >= 0 && l2 >= 0 {
-			if t.idMap[slice1[l1]] > t.idMap[slice2[l2]] {
-				res = append(res, slice1[l1])
-				l1 --
-			} else {
-				res = append(res, slice2[l2])
-				l2 --
-			}
-		} else if l1 >= 0 {
-			res = append(res, slice1[l1])
-			l1 --
-		} else if l2 >= 0 {
-			res = append(res, slice2[l2])
-			l2 --
-		}
-		if l1 < 0 && l2 < 0 {break}
-	}
-	if len(res) > 10 {
-		return res[:10]
-	}
-	return res
+	slice := append(slice1, slice2...)
+	sort.Slice(slice, func(i, j int) bool {
+		return t.idMap[slice[i]] > t.idMap[slice[j]]
+	})
+	if len(slice) > 10 {return slice[:10]}
+	return slice
 }
 
 /** Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent. */
@@ -105,6 +89,7 @@ func Test355()  {
 	t.PostTweet(1, 3)
 	t.PostTweet(1, 101)
 	t.PostTweet(2, 13)
+	t.PostTweet(2, 10)
 	t.PostTweet(1, 2)
 	t.PostTweet(2, 94)
 	t.PostTweet(2, 505)
