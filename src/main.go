@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"path/filepath"
 	"runtime"
+	"sort"
+	"strconv"
 	"strings"
 	"subs"
 )
@@ -16,8 +18,15 @@ func generateReadMe() {
 	text := "## LeetCode By Go\n\n### Finished Subjects\n\n|"
 	i := 0
 	urlPrefix := "https://github.com/Harpsichord1207/GoLeetCode/blob/main/src/subs/"
+	var subNumbers []int
 	for _, fi := range rd {
-		no := fmt.Sprintf(" [%04s](%s%s) ",strings.Replace(fi.Name(), ".go", "", -1), urlPrefix, fi.Name())
+		no := strings.Replace(fi.Name(), ".go", "", -1)
+		noInt, _ :=  strconv.Atoi(no)
+		subNumbers = append(subNumbers, noInt)
+	}
+	sort.Ints(subNumbers)
+	for _, subNumber := range subNumbers {
+		no := fmt.Sprintf(" [%04s](%s%s.go) ", strconv.Itoa(subNumber), urlPrefix, strconv.Itoa(subNumber))
 		text += no + "|"
 		i += 1
 		if i % 5 == 0 {text += "  \n|"}
@@ -34,6 +43,6 @@ func generateReadMe() {
 }
 
 func main(){
-	subs.Test355()
+	subs.Test1175()
 	generateReadMe()
 }
