@@ -21,7 +21,7 @@ func generateReadMe() {
 	var subNumbers []int
 	for _, fi := range rd {
 		no := strings.Replace(fi.Name(), ".go", "", -1)
-		noInt, _ :=  strconv.Atoi(no)
+		noInt, _ := strconv.Atoi(no)
 		subNumbers = append(subNumbers, noInt)
 	}
 	sort.Ints(subNumbers)
@@ -30,7 +30,7 @@ func generateReadMe() {
 		no := fmt.Sprintf(" [%04s](%s%s.go) ", strconv.Itoa(subNumber), urlPrefix, strconv.Itoa(subNumber))
 		text += no + "|"
 		i += 1
-		if i % 5 == 0 {
+		if i%5 == 0 {
 			text += "  \n"
 			if i != total {
 				text += "|"
@@ -39,7 +39,9 @@ func generateReadMe() {
 	}
 	readMeFile := ""
 	for _, p := range strings.Split(dir, "/") {
-		if p == "src" { break }
+		if p == "src" {
+			break
+		}
 		readMeFile += p + "/"
 	}
 	readMeFile += "ReadMe.md"
@@ -48,7 +50,7 @@ func generateReadMe() {
 	fmt.Println("Finish to write ReadMe.md")
 }
 
-func main(){
-	subs.Test45()
+func main() {
+	subs.Test199()
 	generateReadMe()
 }
