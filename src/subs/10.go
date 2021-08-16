@@ -30,6 +30,7 @@ func isMatch(s string, p string) bool {
 				if p[j-2] != s[i-1] && p[j-2] != '.' {
 					dp[i][j] = dp[i][j-2]
 				// 否则，'*' 可以匹配第j-1个字符0次(j-2)、1次(j-1)或者多次(i-1)
+				// 多次包含i-1/i-2/i-3... 但如果i-2匹配则i-1必然匹配
 				} else {
 					dp[i][j] = dp[i][j-1] || dp[i-1][j] || dp[i][j-2]
 				}
