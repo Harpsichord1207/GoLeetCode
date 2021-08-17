@@ -43,7 +43,7 @@ func Constructor295() MedianFinder {
 	return m
 }
 
-func (m *MedianFinder) AddNum(num int)  {
+func (m *MedianFinder) AddNum(num int) {
 	heap.Push(m.Small, num)
 	heap.Push(m.Lager, -heap.Pop(m.Small).(int))
 	if m.Small.Len() < m.Lager.Len() {
