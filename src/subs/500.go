@@ -18,7 +18,6 @@ func isSameRow(word string) bool {
 	return _isSameRow(word, "qwertyuiop") || _isSameRow(word, "asdfghjkl") || _isSameRow(word, "zxcvbnm")
 }
 
-
 func findWords(words []string) []string {
 	var res []string
 	for _, word := range words {
@@ -30,8 +29,8 @@ func findWords(words []string) []string {
 	return res
 }
 
-func Test500(){
-	words := []string{"Hello","Alaska","Dad","Peace"}
+func Test500() {
+	words := []string{"Hello", "Alaska", "Dad", "Peace"}
 	res := findWords(words)
 	fmt.Println(res)
 }

@@ -18,10 +18,12 @@ func isHappy(n int) bool {
 	for {
 		m[n] = 1
 		n = calc(n)
-		if m[n] == 1 {return n == 1}
+		if m[n] == 1 {
+			return n == 1
+		}
 	}
 }
 
-func Test202()  {
+func Test202() {
 	fmt.Println(isHappy(2))
 }

@@ -1,6 +1,6 @@
 package subs
 
-type Iterator struct {}
+type Iterator struct{}
 
 func (itr *Iterator) hasNext() bool {
 	return true
@@ -10,10 +10,9 @@ func (itr *Iterator) next() int {
 	return 1
 }
 
-
 type PeekingIterator struct {
-	it *Iterator
-	value int
+	it       *Iterator
+	value    int
 	hasValue bool
 }
 
@@ -44,6 +43,6 @@ func (pki *PeekingIterator) peek() int {
 	return pki.value
 }
 
-func Test284(){
+func Test284() {
 	Constructor284(&Iterator{})
 }

@@ -19,7 +19,7 @@ func sumOfLeftLeaves(root *TreeNode) int {
 	return s
 }
 
-func Test404()  {
+func Test404() {
 	l := TreeNode{9, nil, nil}
 	r := TreeNode{20, &TreeNode{15, nil, nil}, &TreeNode{7, nil, nil}}
 	fmt.Println(sumOfLeftLeaves(&TreeNode{3, &l, &r}))

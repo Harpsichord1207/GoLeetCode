@@ -1,7 +1,7 @@
 package subs
 
 type Node struct {
-	Val int
+	Val      int
 	Children []*Node
 }
 

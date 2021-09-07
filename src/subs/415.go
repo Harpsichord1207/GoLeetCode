@@ -13,11 +13,11 @@ func addStrings(num1 string, num2 string) string {
 		l1, l2 = l2, l1
 	}
 	var resArray = [10000]uint8{}
-	for i,j := l1-1, 9999; i>=0;i,j=i-1,j-1{
+	for i, j := l1-1, 9999; i >= 0; i, j = i-1, j-1 {
 		n := num1[i]
 		resArray[j] = n - 48
 	}
-	for i,j := l2-1, 9999; i>=0;i,j=i-1,j-1{
+	for i, j := l2-1, 9999; i >= 0; i, j = i-1, j-1 {
 		n := num2[i]
 		resArray[j] += n
 		if resArray[j] >= 58 {
@@ -32,7 +32,7 @@ func addStrings(num1 string, num2 string) string {
 	return string(resArray[10000-l2:])
 }
 
-func Test415()  {
+func Test415() {
 	// 48 -> 0 ... 58 ->9
 	fmt.Println(addStrings("1", "9"))
 }

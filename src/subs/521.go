@@ -14,7 +14,6 @@ func findLUSlength(a string, b string) int {
 	return lb
 }
 
-
-func Test521(){
+func Test521() {
 	fmt.Println(findLUSlength("abc", "bc"))
 }

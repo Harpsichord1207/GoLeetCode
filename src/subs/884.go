@@ -5,12 +5,12 @@ import "strings"
 func uncommonFromSentences(s1 string, s2 string) []string {
 	m1 := make(map[string]int)
 	for _, word := range strings.Fields(s1) {
-		m1[word] ++
+		m1[word]++
 	}
 
 	m2 := make(map[string]int)
 	for _, word := range strings.Fields(s2) {
-		m2[word] ++
+		m2[word]++
 	}
 
 	var r []string

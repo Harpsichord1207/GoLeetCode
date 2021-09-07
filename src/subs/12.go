@@ -19,6 +19,6 @@ func intToRoman(num int) string {
 	return roman
 }
 
-func Test12()  {
+func Test12() {
 	fmt.Println(intToRoman(1994))
 }

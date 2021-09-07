@@ -13,7 +13,7 @@ func detectCapitalUse(word string) bool {
 			if unicode.IsUpper(r) {
 				firstRuneIsUpper = true
 			}
-		} else if i == 1{
+		} else if i == 1 {
 			if unicode.IsUpper(r) {
 				secondRuneIsUpper = true
 			}
@@ -29,7 +29,7 @@ func detectCapitalUse(word string) bool {
 	return true
 }
 
-func Test520()  {
+func Test520() {
 	fmt.Println(detectCapitalUse("USA"))
 	fmt.Println(detectCapitalUse("FlaG"))
 	fmt.Println(detectCapitalUse("leetcode"))

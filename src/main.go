@@ -26,11 +26,12 @@ func generateReadMe() {
 	}
 	sort.Ints(subNumbers)
 	total := len(subNumbers)
+	rowSize := 10
 	for _, subNumber := range subNumbers {
 		no := fmt.Sprintf(" [%04s](%s%s.go) ", strconv.Itoa(subNumber), urlPrefix, strconv.Itoa(subNumber))
 		text += no + "|"
 		i += 1
-		if i%5 == 0 {
+		if i%rowSize == 0 {
 			text += "  \n"
 			if i != total {
 				text += "|"

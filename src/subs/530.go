@@ -25,5 +25,5 @@ func getMinimumDifference(root *TreeNode) int {
 	return minNum
 }
 
-func Test530(){
+func Test530() {
 }

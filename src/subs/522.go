@@ -5,10 +5,12 @@ import "fmt"
 func isSub(a string, b string) bool {
 	la := len(a)
 	lb := len(b)
-	if la > lb {return false}
+	if la > lb {
+		return false
+	}
 	i := 0
-	for j:=0;j<lb;j++{
-		if b[j] == a[i]{
+	for j := 0; j < lb; j++ {
+		if b[j] == a[i] {
 			i++
 		}
 		if i == la {
@@ -21,11 +23,13 @@ func isSub(a string, b string) bool {
 func findLUSlength2(strs []string) int {
 	l := len(strs)
 	maxLength := -1
-	for i:=0;i<l;i++{
+	for i := 0; i < l; i++ {
 		found := false
-		for j:=0;j<l;j++{
-			if i==j {continue}
-			if isSub(strs[i], strs[j]){
+		for j := 0; j < l; j++ {
+			if i == j {
+				continue
+			}
+			if isSub(strs[i], strs[j]) {
 				found = true
 				break
 			}
@@ -39,7 +43,6 @@ func findLUSlength2(strs []string) int {
 	return maxLength
 }
 
-
-func Test522(){
-	fmt.Println(findLUSlength2([]string{"aaa","aaa","aa"}))
+func Test522() {
+	fmt.Println(findLUSlength2([]string{"aaa", "aaa", "aa"}))
 }

@@ -23,11 +23,11 @@ func (p *PriorityQueue295) Pop() interface{} {
 	old := *p
 	n := len(old)
 	x := old[n-1]
-	*p = old[0:n-1]
+	*p = old[0 : n-1]
 	return x
 }
 
-func (p PriorityQueue295) Top () float64 {
+func (p PriorityQueue295) Top() float64 {
 	return float64(p[0])
 }
 
@@ -56,7 +56,7 @@ func (m *MedianFinder) FindMedian() float64 {
 	if m.Small.Len() > m.Lager.Len() {
 		return m.Small.Top()
 	}
-	return (m.Small.Top()-m.Lager.Top())*0.5
+	return (m.Small.Top() - m.Lager.Top()) * 0.5
 }
 
 func Test295() {

@@ -6,12 +6,11 @@ import (
 )
 
 type Twitter struct {
-	follows map[int]map[int]bool
+	follows  map[int]map[int]bool
 	twitters map[int][]int
-	idMap map[int]int
-	id int
+	idMap    map[int]int
+	id       int
 }
-
 
 /** Initialize your data structure here. */
 func Constructor() Twitter {
@@ -23,13 +22,12 @@ func Constructor() Twitter {
 	return t
 }
 
-
 /** Compose a new tweet. */
-func (t *Twitter) PostTweet(userId int, tweetId int)  {
+func (t *Twitter) PostTweet(userId int, tweetId int) {
 	twitters := t.twitters[userId]
 	twitters = append(twitters, tweetId)
 	t.twitters[userId] = twitters
-	t.id ++
+	t.id++
 	t.idMap[tweetId] = t.id
 }
 
@@ -38,7 +36,9 @@ func mergeSlice(t *Twitter, slice1 []int, slice2 []int) []int {
 	sort.Slice(slice, func(i, j int) bool {
 		return t.idMap[slice[i]] > t.idMap[slice[j]]
 	})
-	if len(slice) > 10 {return slice[:10]}
+	if len(slice) > 10 {
+		return slice[:10]
+	}
 	return slice
 }
 
@@ -61,9 +61,8 @@ func (t *Twitter) GetNewsFeed(userId int) []int {
 	return feed
 }
 
-
 /** Follower follows a followee. If the operation is invalid, it should be a no-op. */
-func (t *Twitter) Follow(followerId int, followeeId int)  {
+func (t *Twitter) Follow(followerId int, followeeId int) {
 	follows := t.follows[followerId]
 	if follows == nil {
 		follows = make(map[int]bool)
@@ -72,9 +71,8 @@ func (t *Twitter) Follow(followerId int, followeeId int)  {
 	t.follows[followerId] = follows
 }
 
-
 /** Follower unfollows a followee. If the operation is invalid, it should be a no-op. */
-func (t *Twitter) Unfollow(followerId int, followeeId int)  {
+func (t *Twitter) Unfollow(followerId int, followeeId int) {
 	follows := t.follows[followerId]
 	if follows == nil {
 		follows = make(map[int]bool)
@@ -83,7 +81,7 @@ func (t *Twitter) Unfollow(followerId int, followeeId int)  {
 	t.follows[followerId] = follows
 }
 
-func Test355()  {
+func Test355() {
 	t := Constructor()
 	t.PostTweet(2, 5)
 	t.PostTweet(1, 3)

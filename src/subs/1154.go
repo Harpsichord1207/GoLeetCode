@@ -13,6 +13,6 @@ func dayOfYear(date string) int {
 	return int(e.Sub(s).Hours()/24 + 1)
 }
 
-func Test1154()  {
+func Test1154() {
 	fmt.Println(dayOfYear("2019-02-10"))
 }

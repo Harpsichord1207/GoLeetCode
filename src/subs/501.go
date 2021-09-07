@@ -5,11 +5,10 @@ import "fmt"
 //Definition for a binary tree node.
 
 type TreeNode struct {
-    Val int
-    Left *TreeNode
-    Right *TreeNode
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
 }
-
 
 func inOrder(r *TreeNode) []int {
 	var list []int
@@ -24,8 +23,6 @@ func inOrder(r *TreeNode) []int {
 	return list
 }
 
-
-
 func findMode(root *TreeNode) []int {
 	var maxCountNum []int
 	maxCount := 0
@@ -37,7 +34,7 @@ func findMode(root *TreeNode) []int {
 			currentNum = v
 			currentCount = 0
 		}
-		currentCount ++
+		currentCount++
 		if currentCount > maxCount {
 			maxCount = currentCount
 			maxCountNum = []int{v}
@@ -48,7 +45,7 @@ func findMode(root *TreeNode) []int {
 	return maxCountNum
 }
 
-func Test501()  {
+func Test501() {
 	r := TreeNode{1, nil, &TreeNode{2, &TreeNode{2, nil, nil}, nil}}
 	r = TreeNode{1, nil, &TreeNode{2, nil, nil}}
 	fmt.Println(findMode(&r))

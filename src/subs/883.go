@@ -23,4 +23,3 @@ func projectionArea(grid [][]int) int {
 	}
 	return res
 }
-

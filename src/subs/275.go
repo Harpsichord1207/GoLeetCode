@@ -3,10 +3,10 @@ package subs
 func hIndex275(citations []int) int {
 	res := 0
 	le := len(citations)
-	l, r := 0, le - 1
+	l, r := 0, le-1
 
 	for l < r {
-		m := l + (r - l) / 2
+		m := l + (r-l)/2
 		curr := le - m
 		if curr > citations[m] {
 			curr = citations[m]
@@ -20,4 +20,3 @@ func hIndex275(citations []int) int {
 	}
 	return res
 }
-

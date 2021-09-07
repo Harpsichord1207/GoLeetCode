@@ -9,8 +9,8 @@ func maxRotateFunction(nums []int) int {
 	}
 	var res = f
 	size := len(nums)
-	for i:=1;i<size;i++{
-		f = f + sum - size * nums[size-i]
+	for i := 1; i < size; i++ {
+		f = f + sum - size*nums[size-i]
 		if f > res {
 			res = f
 		}

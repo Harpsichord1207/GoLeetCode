@@ -1,9 +1,9 @@
 package subs
 
-
 func findSecondMinimumValue(root *TreeNode) int {
-	if root == nil || root.Left == nil {return -1}
-
+	if root == nil || root.Left == nil {
+		return -1
+	}
 
 	var left int
 	if root.Left.Val == root.Val {
@@ -20,12 +20,15 @@ func findSecondMinimumValue(root *TreeNode) int {
 	}
 
 	if left == -1 || right == -1 {
-		if left > right {return left}
+		if left > right {
+			return left
+		}
 		return right
 	} else {
-		if left > right {return right}
+		if left > right {
+			return right
+		}
 		return left
 	}
 
 }
-

@@ -7,9 +7,9 @@ import (
 
 func fizzBuzz(n int) []string {
 	var ans []string
-	for i:=1;i<=n;i++{
-		b5 := i % 5 == 0
-		b3 := i % 3 == 0
+	for i := 1; i <= n; i++ {
+		b5 := i%5 == 0
+		b3 := i%3 == 0
 		if b3 && b5 {
 			ans = append(ans, "FizzBuzz")
 		} else if b5 {
@@ -23,7 +23,6 @@ func fizzBuzz(n int) []string {
 	return ans
 }
 
-
-func Test412()  {
+func Test412() {
 	fmt.Println(fizzBuzz(15))
 }

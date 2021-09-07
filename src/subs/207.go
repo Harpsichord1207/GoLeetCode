@@ -2,19 +2,23 @@ package subs
 
 import "fmt"
 
-
 func dfs207(graph [][]int, visit []int, i int) bool {
-	if visit[i] == -1 {return false}
-	if visit[i] == 1 {return true}
+	if visit[i] == -1 {
+		return false
+	}
+	if visit[i] == 1 {
+		return true
+	}
 
 	visit[i] = -1
 	for _, a := range graph[i] {
-		if !dfs207(graph, visit, a) {return false}
+		if !dfs207(graph, visit, a) {
+			return false
+		}
 	}
 	visit[i] = 1
 	return true
 }
-
 
 func canFinish(numCourses int, prerequisites [][]int) bool {
 	graph := make([][]int, numCourses)
@@ -22,8 +26,10 @@ func canFinish(numCourses int, prerequisites [][]int) bool {
 	for _, p := range prerequisites {
 		graph[p[1]] = append(graph[p[1]], p[0])
 	}
-	for i:=0;i<numCourses;i++{
-		if !dfs207(graph, visit, i) {return false}
+	for i := 0; i < numCourses; i++ {
+		if !dfs207(graph, visit, i) {
+			return false
+		}
 	}
 	return true
 }

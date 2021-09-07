@@ -21,8 +21,7 @@ func hIndex(citations []int) int {
 	return res
 }
 
-
-func Test274()  {
+func Test274() {
 	r := hIndex([]int{0, 0})
 	fmt.Println(r)
 }

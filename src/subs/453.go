@@ -9,9 +9,9 @@ func minMoves(nums []int) int {
 		total += n
 		if min == -1 {
 			min = n
-		} else if min >n {
+		} else if min > n {
 			min = n
 		}
 	}
-	return total - min * l
+	return total - min*l
 }

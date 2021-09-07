@@ -30,7 +30,7 @@ func findRelativeRanks(score []int) []string {
 	return res
 }
 
-func Test506()  {
-	score := []int{10,3,8,9,4}
+func Test506() {
+	score := []int{10, 3, 8, 9, 4}
 	fmt.Println(findRelativeRanks(score))
 }

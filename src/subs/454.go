@@ -18,6 +18,6 @@ func fourSumCount(nums1 []int, nums2 []int, nums3 []int, nums4 []int) int {
 	return res
 }
 
-func Test454()  {
+func Test454() {
 	fmt.Println(fourSumCount([]int{1, 2}, []int{3, 4}, []int{-1, -3}, []int{-2, -4}))
 }
