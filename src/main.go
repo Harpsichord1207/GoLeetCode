@@ -52,6 +52,6 @@ func generateReadMe() {
 }
 
 func main() {
-	subs.Test37()
 	generateReadMe()
+	subs.Test37()
 }

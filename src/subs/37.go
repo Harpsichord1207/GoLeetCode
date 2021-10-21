@@ -1,10 +1,16 @@
 package subs
 
+import "fmt"
+
 var numsByte = []byte{'1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
-type pos struct {
+type position struct {
 	i int
 	j int
+}
+
+func (p position) String() string {
+	return fmt.Sprintf("Position(%d, %d)", p.i, p.j)
 }
 
 func getGridNum(i int, j int) int {
@@ -52,7 +58,7 @@ func solveSudoku(board [][]byte)  {
 	var colsMap []map[byte]bool
 	var rowsMap []map[byte]bool
 	var gridsMap []map[byte]bool
-	dotsMap := make(map[pos]bool)
+	dotsMap := make(map[position]bool)
 
 	for i:=0;i<9;i++ {
 		colsMap = append(colsMap, make(map[byte]bool))
@@ -69,16 +75,16 @@ func solveSudoku(board [][]byte)  {
 				gridsMap[gridNum][value] = true
 				colsMap[j][value] = true
 			} else {
-				dotsMap[pos{i, j}] = true
+				dotsMap[position{i, j}] = true
 			}
 		}
 	}
-
-	failedMap := make(map[pos]map[byte]bool)
-	var stack []pos
+	
+	var positionStack []position
+	failedValueMap := make(map[byte]bool)
 
 	for {
-		var firstPos pos
+		var firstPos position
 		hasDot := false
 		for pos, v := range dotsMap {
 			if v {
@@ -87,11 +93,15 @@ func solveSudoku(board [][]byte)  {
 				break
 			}
 		}
-
+		
 		if !hasDot {
 			break
 		}
 
+		//printSudoku(board)
+		//print("++++++++++++++++++++++\n")
+		//fmt.Println(firstPos)
+		
 		i := firstPos.i
 		j := firstPos.j
 
@@ -99,58 +109,77 @@ func solveSudoku(board [][]byte)  {
 		var candidates []byte
 		for _, n := range numsByte {
 			if rowsMap[i][n] {
+				fmt.Printf("number %c in rowsMap[%d]\n", n, i)
 				continue
 			}
 			if colsMap[j][n] {
+				fmt.Printf("number %c in colsMap[%d]\n", n, j)
 				continue
 			}
 			if gridsMap[gridNum][n] {
+				fmt.Printf("number %c in gridsMap[%d]\n", n, gridNum)
 				continue
 			}
-			if failedMap[firstPos][n] {
+			if failedValueMap[n]{
+				fmt.Printf("number %c has failed before\n", n)
 				continue
 			}
+			fmt.Printf("number %c has been candidated\n", n)
 			candidates = append(candidates, n)
 		}
+
+		if len(candidates) + len(positionStack) == 0 {
+			panic("YOU WROTE A BUG!")
+		}
+
 		if len(candidates) == 0 {
-			// 上一个位置填充的数放到失败数组里，上一个位置置为.
-			pre := stack[len(stack)-1]
-			stack = stack[:len(stack)-1]
-			preValue := board[pre.i][pre.j]
-			if failedMap[pre] == nil {
-				failedMap[pre] = make(map[byte]bool)
-				failedMap[pre][preValue] = true
-			} else {
-				failedMap[pre][preValue] = true
-			}
-			board[pre.i][pre.j] = '.'
+			prePos := positionStack[len(positionStack)-1]
+			positionStack = positionStack[:len(positionStack)-1]
+			preValue := board[prePos.i][prePos.j]
+			failedValueMap[preValue] = true
+			board[prePos.i][prePos.j] = '.'
+			colsMap[prePos.j][preValue] = false
+			rowsMap[prePos.i][preValue] = false
+			gridsMap[getGridNum(prePos.i, prePos.j)][preValue] = false
+			dotsMap[prePos] = true
+			fmt.Printf("stack pop, pre : %s\n", prePos)
 		} else {
 			board[i][j] = candidates[0]
 			rowsMap[i][candidates[0]] = true
 			colsMap[j][candidates[0]] = true
 			gridsMap[gridNum][candidates[0]] = true
 			dotsMap[firstPos] = false
-			stack = append(stack, firstPos)
+			positionStack = append(positionStack, firstPos)
+			failedValueMap = make(map[byte]bool)  // clear map
+
+			fmt.Printf("try value %s -> %c\n", firstPos, candidates[0])
+			println("---------------")
+			printSudoku(board)
+			println("===============")
 		}
-
+		
 	}
+}
 
-
-
+func printSudoku(board [][]byte)  {
+	for _, row := range board {
+		println(string(row))
+	}
 }
 
 func Test37() {
 	board := [][]byte{
 		{'5', '3', '.', '.', '7', '.', '.', '.', '.'},
-		{'5', '3', '.', '.', '8', '.', '.', '.', '.'},
-		{'5', '3', '.', '.', '7', '.', '.', '.', '.'},
-		{'5', '3', '.', '.', '7', '.', '.', '.', '.'},
-		{'5', '3', '.', '.', '7', '.', '.', '.', '.'},
-		{'5', '3', '.', '.', '7', '.', '.', '.', '.'},
-		{'5', '3', '.', '.', '7', '.', '.', '.', '.'},
-		{'5', '3', '.', '.', '7', '.', '.', '.', '.'},
-		{'5', '3', '.', '.', '7', '.', '.', '.', '.'},
+		{'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+		{'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+		{'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+		{'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+		{'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+		{'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+		{'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+		{'.', '.', '.', '.', '8', '.', '.', '7', '9'},
 	}
 	solveSudoku(board)
+	printSudoku(board)
 }
 
