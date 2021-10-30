@@ -1,170 +1,250 @@
 package subs
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
-var numsByte = []byte{'1', '2', '3', '4', '5', '6', '7', '8', '9'}
+// http://norvig.com/top95solutions.html
 
-type position struct {
-	i int
-	j int
+var Digits = "123456789"
+var Rows = "ABCDEFGHI"
+var Cols = Digits
+var Squares []string
+var UnitList [][]string
+var UnitMap map[string][][]string
+var PeerMap map[string]map[string]bool
+var EmptyMap = map[string]string{}
+
+type Result37 struct {
+	OK   bool
+	Data map[string]string
 }
 
-func (p position) String() string {
-	return fmt.Sprintf("Position(%d, %d)", p.i, p.j)
+func initConstants() {
+	cross := func(a string, b string) []string {
+		var c []string
+		for _, i := range a {
+			for _, j := range b {
+				c = append(c, string(i)+string(j))
+			}
+		}
+		return c
+	}
+
+	Squares = cross(Rows, Cols)
+
+	// UnitList
+	for _, d := range Digits {
+		UnitList = append(UnitList, cross(Rows, string(d)))
+	}
+	for _, r := range Rows {
+		UnitList = append(UnitList, cross(string(r), Cols))
+	}
+	for _, rs := range []string{"ABC", "DEF", "GHI"} {
+		for _, cs := range []string{"123", "456", "789"} {
+			UnitList = append(UnitList, cross(rs, cs))
+		}
+	}
+
+	// UnitMap
+	UnitMap = make(map[string][][]string)
+	for _, s := range Squares {
+		var sUnits [][]string
+		for _, unit := range UnitList {
+			isIn := false
+			for _, u := range unit {
+				if u == s {
+					isIn = true
+					break
+				}
+			}
+			if isIn {
+				sUnits = append(sUnits, unit)
+			}
+
+		}
+		UnitMap[s] = sUnits
+	}
+
+	// PeerMap
+	PeerMap = make(map[string]map[string]bool)
+	for _, s := range Squares {
+		setMap := make(map[string]bool)
+		for _, unit := range UnitMap[s] {
+			for _, u := range unit {
+				if u != s {
+					setMap[u] = true
+				}
+			}
+		}
+		PeerMap[s] = setMap
+	}
+
 }
 
-func getGridNum(i int, j int) int {
-	if i < 3 {
-		if j < 3 {
-			return 0
-		}
-		if j < 6 {
-			return 1
-		}
-		if j < 9 {
-			return 2
+func assign(values map[string]string, s string, d string) map[string]string {
+	otherValues := strings.Replace(values[s], d, "", -1)
+	for _, ov := range otherValues {
+		if !eliminate(values, s, string(ov)).OK {
+			return make(map[string]string)
 		}
 	}
-
-	if i < 6 {
-		if j < 3 {
-			return 3
-		}
-		if j < 6 {
-			return 4
-		}
-		if j < 9 {
-			return 5
-		}
-	}
-
-	if i < 9 {
-		if j < 3 {
-			return 6
-		}
-		if j < 6 {
-			return 7
-		}
-		if j < 9 {
-			return 8
-		}
-	}
-
-	panic("Impossible!")
+	return values
 }
 
-func solveSudoku(board [][]byte)  {
+func eliminate(values map[string]string, s string, d string) Result37 {
+	// 消除values中位置为s的值中的d
 
-	var colsMap []map[byte]bool
-	var rowsMap []map[byte]bool
-	var gridsMap []map[byte]bool
-	dotsMap := make(map[position]bool)
-
-	for i:=0;i<9;i++ {
-		colsMap = append(colsMap, make(map[byte]bool))
-		rowsMap = append(rowsMap, make(map[byte]bool))
-		gridsMap = append(gridsMap, make(map[byte]bool))
+	// 已经没有d了
+	if !strings.Contains(values[s], d) {
+		return Result37{true, values}
 	}
-
-	for i:=0;i<9;i++ {
-		for j:=0;j<9;j++ {
-			value := board[i][j]
-			gridNum := getGridNum(i, j)
-			if value != '.' {
-				rowsMap[i][value] = true
-				gridsMap[gridNum][value] = true
-				colsMap[j][value] = true
-			} else {
-				dotsMap[position{i, j}] = true
+	values[s] = strings.Replace(values[s], d, "", -1)
+	if len(values[s]) == 0 {
+		return Result37{false, EmptyMap}
+	}
+	if len(values[s]) == 1 {
+		d2 := values[s]
+		for s2, v_ := range PeerMap[s] {
+			if !v_ {
+				continue
+			}
+			if !eliminate(values, s2, d2).OK {
+				return Result37{false, EmptyMap}
 			}
 		}
 	}
-	
-	var positionStack []position
-	failedValueMap := make(map[byte]bool)
 
-	for {
-		var firstPos position
-		hasDot := false
-		for pos, v := range dotsMap {
-			if v {
-				firstPos = pos
-				hasDot = true
-				break
+	for _, u := range UnitMap[s] {
+		var dPlaces []string
+		for _, s_ := range u {
+			if strings.Contains(values[s_], d) {
+				dPlaces = append(dPlaces, s_)
 			}
 		}
-		
-		if !hasDot {
-			break
+
+		if len(dPlaces) == 0 {
+			return Result37{false, EmptyMap}
 		}
-
-		//printSudoku(board)
-		//print("++++++++++++++++++++++\n")
-		//fmt.Println(firstPos)
-		
-		i := firstPos.i
-		j := firstPos.j
-
-		gridNum := getGridNum(i, j)
-		var candidates []byte
-		for _, n := range numsByte {
-			if rowsMap[i][n] {
-				fmt.Printf("number %c in rowsMap[%d]\n", n, i)
-				continue
+		if len(dPlaces) == 1 {
+			if len(assign(values, dPlaces[0], d)) == 0 {
+				return Result37{false, EmptyMap}
 			}
-			if colsMap[j][n] {
-				fmt.Printf("number %c in colsMap[%d]\n", n, j)
-				continue
-			}
-			if gridsMap[gridNum][n] {
-				fmt.Printf("number %c in gridsMap[%d]\n", n, gridNum)
-				continue
-			}
-			if failedValueMap[n]{
-				fmt.Printf("number %c has failed before\n", n)
-				continue
-			}
-			fmt.Printf("number %c has been candidated\n", n)
-			candidates = append(candidates, n)
 		}
-
-		if len(candidates) + len(positionStack) == 0 {
-			panic("YOU WROTE A BUG!")
-		}
-
-		if len(candidates) == 0 {
-			prePos := positionStack[len(positionStack)-1]
-			positionStack = positionStack[:len(positionStack)-1]
-			preValue := board[prePos.i][prePos.j]
-			failedValueMap[preValue] = true
-			board[prePos.i][prePos.j] = '.'
-			colsMap[prePos.j][preValue] = false
-			rowsMap[prePos.i][preValue] = false
-			gridsMap[getGridNum(prePos.i, prePos.j)][preValue] = false
-			dotsMap[prePos] = true
-			fmt.Printf("stack pop, pre : %s\n", prePos)
-		} else {
-			board[i][j] = candidates[0]
-			rowsMap[i][candidates[0]] = true
-			colsMap[j][candidates[0]] = true
-			gridsMap[gridNum][candidates[0]] = true
-			dotsMap[firstPos] = false
-			positionStack = append(positionStack, firstPos)
-			failedValueMap = make(map[byte]bool)  // clear map
-
-			fmt.Printf("try value %s -> %c\n", firstPos, candidates[0])
-			println("---------------")
-			printSudoku(board)
-			println("===============")
-		}
-		
 	}
+	return Result37{true, values}
 }
 
-func printSudoku(board [][]byte)  {
-	for _, row := range board {
-		println(string(row))
+func copyMap(values map[string]string) map[string]string {
+	copyValues := make(map[string]string)
+	for k, v := range values {
+		copyValues[k] = v
 	}
+	return copyValues
+}
+
+func gridValues(gridBoard [][]byte) map[string]string {
+	var chars []string
+	for _, row := range gridBoard {
+		for _, val := range row {
+			chars = append(chars, string(val))
+		}
+	}
+
+	m := make(map[string]string)
+	for i := 0; i < 81; i++ {
+		m[Squares[i]] = chars[i]
+	}
+	return m
+}
+
+func parseGrid(gridBoard [][]byte) map[string]string {
+	values := make(map[string]string)
+	for _, s := range Squares {
+		values[s] = Digits
+	}
+	for s, d := range gridValues(gridBoard) {
+		if strings.Contains(Digits, d) && len(assign(values, s, d)) == 0 {
+			return make(map[string]string) // length == 0 --> false
+		}
+	}
+	return values
+}
+
+func search(values map[string]string) Result37 {
+	if len(values) == 0 {
+		return Result37{false, EmptyMap}
+	}
+
+	isSolved := true
+	for _, v := range values {
+		if len(v) != 1 {
+			isSolved = false
+		}
+	}
+
+	if isSolved {
+		return Result37{true, values}
+	}
+
+	minLen := 10
+	var targetS string
+	for _, s := range Squares {
+		if len(values[s]) > 1 && len(values[s]) < minLen {
+			minLen = len(values[s])
+			targetS = s
+		}
+	}
+
+	for _, d := range values[targetS] {
+		res := search(assign(copyMap(values), targetS, string(d)))
+		if res.OK {
+			return res
+		}
+	}
+
+	return Result37{false, EmptyMap}
+}
+
+func display(values map[string]string) {
+	var width = 0
+	for _, s := range Squares {
+		if len(values[s]) > width {
+			width = len(values[s])
+		}
+	}
+	width++
+
+	linePart1 := strings.Repeat("-", width*3)
+	line := linePart1 + "+" + linePart1 + "+" + linePart1
+
+	for _, r := range Rows {
+		var row string
+		for _, c := range Cols {
+			row += values[string(r)+string(c)]
+			if strings.Contains("36", string(c)) {
+				row += "|"
+			}
+
+		}
+		println(row)
+		if strings.Contains("CF", string(r)) {
+			println(line)
+		}
+	}
+
+}
+
+func solveSudoku(board [][]byte) {
+	initConstants()
+	result := search(parseGrid(board))
+	for i, r := range Rows {
+		for j, c := range Cols {
+			board[i][j] = []byte(result.Data[string(r)+string(c)])[0]
+		}
+	}
+
 }
 
 func Test37() {
@@ -180,6 +260,5 @@ func Test37() {
 		{'.', '.', '.', '.', '8', '.', '.', '7', '9'},
 	}
 	solveSudoku(board)
-	printSudoku(board)
+	fmt.Printf("%#v", board)
 }
-
