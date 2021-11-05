@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"runtime"
 	"sort"
@@ -10,6 +11,22 @@ import (
 	"strings"
 	"subs"
 )
+
+func checkFileLinesCount(fullPath string) {
+	content, err := ioutil.ReadFile(fullPath)
+	if err != nil {
+		panic(fmt.Sprintf("Failed to read %s", fullPath))
+	}
+	count := 0
+	for _, line := range strings.Split(string(content), "\n") {
+		if len(strings.Replace(line, " ", "", -1)) > 0 {
+			count ++
+		}
+	}
+	if count < 20 {
+		fmt.Printf("File %s has too few lines: %d\n", fullPath, count)
+	}
+}
 
 func generateReadMe() {
 	_, file, _, _ := runtime.Caller(1)
@@ -20,6 +37,7 @@ func generateReadMe() {
 	urlPrefix := "https://github.com/Harpsichord1207/GoLeetCode/blob/main/src/subs/"
 	var subNumbers []int
 	for _, fi := range rd {
+		checkFileLinesCount(dir + "subs" + string(os.PathSeparator) + fi.Name())
 		no := strings.Replace(fi.Name(), ".go", "", -1)
 		noInt, _ := strconv.Atoi(no)
 		subNumbers = append(subNumbers, noInt)
