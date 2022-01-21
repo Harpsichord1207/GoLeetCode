@@ -1,6 +1,7 @@
 package main
 
 import (
+	"LeetCode/subs"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -9,7 +10,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"subs"
 )
 
 func checkFileLinesCount(fullPath string) {
@@ -20,7 +20,7 @@ func checkFileLinesCount(fullPath string) {
 	count := 0
 	for _, line := range strings.Split(string(content), "\n") {
 		if len(strings.Replace(line, " ", "", -1)) > 0 {
-			count ++
+			count++
 		}
 	}
 	if count < 20 {
