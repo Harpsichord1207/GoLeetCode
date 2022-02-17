@@ -11,10 +11,6 @@ func areAlmostEqual(s1 string, s2 string) bool {
 	var b byte
 	for i := 0; i < l; i++ {
 
-		fmt.Println(a)
-		fmt.Println(b)
-		fmt.Println(diff_cnt)
-
 		if s1[i] != s2[i] {
 			diff_cnt += 1
 
