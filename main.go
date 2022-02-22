@@ -34,6 +34,7 @@ func generateReadMe() {
 	rd, _ := ioutil.ReadDir(dir + "subs")
 	text := "## LeetCode By Go\n\n### Finished Subjects\n\n|"
 	i := 0
+
 	urlPrefix := "https://github.com/Harpsichord1207/GoLeetCode/blob/main/subs/"
 	var subNumbers []int
 	for _, fi := range rd {
@@ -71,5 +72,5 @@ func generateReadMe() {
 
 func main() {
 	generateReadMe()
-	subs.Test1790()
+	subs.Test146()
 }
