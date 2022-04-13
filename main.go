@@ -72,5 +72,5 @@ func generateReadMe() {
 
 func main() {
 	generateReadMe()
-	subs.Test753()
+	subs.Test35()
 }

@@ -5,6 +5,12 @@ import "fmt"
 func search753(nums []int, target int) int {
 
 	i, j := 0, len(nums)-1
+
+	// add this logic to speed!
+	if nums[i] > target || nums[j] < target {
+		return -1
+	}
+
 	for i <= j {
 		k := (i + j) / 2
 		v := nums[k]
