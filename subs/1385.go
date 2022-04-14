@@ -14,12 +14,19 @@ func abs1385(num int) int {
 func findTheDistanceValue(arr1 []int, arr2 []int, d int) int {
 	sort.Ints(arr2)
 	le2 := len(arr2)
-
 	helper := func(_num int) bool {
 		i, j := 0, le2-1
+		if arr2[0] >= _num {
+			return arr2[0]-_num > d
+		}
+
+		if arr2[j] <= _num {
+			return _num-arr2[j] > d
+		}
+
 		for i <= j {
 			k := (i + j) / 2
-			v := nums[k]
+			v := arr2[k]
 			if v == _num {
 				return false
 			}
@@ -30,11 +37,6 @@ func findTheDistanceValue(arr1 []int, arr2 []int, d int) int {
 			}
 		}
 
-		if i == le2 {
-			return abs1385(arr2[i-1]-_num) > d
-		} else if i == 0 {
-			return abs1385(arr2[i]-_num) > d
-		}
 		return abs1385(arr2[i]-_num) > d && abs1385(arr2[i-1]-_num) > d
 	}
 
