@@ -54,11 +54,10 @@ func kWeakestRows(mat [][]int, k int) []int {
 				j = p + 1
 			}
 		}
-		// TODO: soldier count is 0
 		rh.Push(Row1337{RowNumber: i, SoldierCount: k + 1})
 	}
 	heap.Init(rh)
-	fmt.Println(rh)
+	// fmt.Println(rh)
 	var res []int
 	for i := 0; i < k; i++ {
 		res = append(res, heap.Pop(rh).(Row1337).RowNumber)

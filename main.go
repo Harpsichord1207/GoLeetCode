@@ -72,5 +72,8 @@ func generateReadMe() {
 
 func main() {
 	generateReadMe()
-	subs.Test74()
+	fmt.Println("=====================================")
+	fmt.Println("Subs output:")
+	fmt.Println("-------------------------------------")
+	subs.Test1346()
 }
