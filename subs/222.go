@@ -2,13 +2,21 @@ package subs
 
 import "math"
 
+// func countNodes(root *TreeNode) int {
+// 	if root == nil {
+// 		return 0
+// 	}
+
+// 	return countNodes(root.Left) + countNodes(root.Right) + 1
+// }
+
 func countNodes(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
 
-	leftDepth := getHeight(root.Left, true)
-	rightDepth := getHeight(root.Right, false)
+	leftDepth := getHeight(root, true)
+	rightDepth := getHeight(root, false)
 
 	if leftDepth == rightDepth {
 		return int(math.Pow(2, float64(leftDepth))) - 1
