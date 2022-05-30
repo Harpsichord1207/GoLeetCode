@@ -13,7 +13,6 @@ func minEatingSpeed(piles []int, h int) int {
 	}
 
 	helper := func(s int) int {
-		fmt.Println("Helper got ", s)
 		r := 0
 		for _, p := range piles {
 			r += p / s
@@ -22,7 +21,6 @@ func minEatingSpeed(piles []int, h int) int {
 			}
 
 		}
-		fmt.Println("Helper return ", r)
 		return r
 	}
 
