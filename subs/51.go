@@ -23,7 +23,7 @@ func solveNQueens(n int) [][]string {
 		}
 
 		for _j := 0; _j < n; _j++ {
-			if isSafe686(_i, _j, _queens) {
+			if isSafe51(_i, _j, _queens) {
 				_queens[_i][_j] = "Q"
 				solveRow(_i+1, queens)
 				queens[_i][_j] = "."
@@ -43,7 +43,7 @@ func queen2string(queens [][]string) []string {
 	return res
 }
 
-func isSafe686(i int, j int, queens [][]string) bool {
+func isSafe51(i int, j int, queens [][]string) bool {
 	s := len(queens)
 	for k, row := range queens {
 
@@ -70,7 +70,7 @@ func isSafe686(i int, j int, queens [][]string) bool {
 }
 
 func Test51() {
-	for _, q := range solveNQueens(30) {
+	for _, q := range solveNQueens(9) {
 		fmt.Println(q)
 	}
 }
