@@ -4,7 +4,6 @@ import (
 	"LeetCode/subs"
 	"fmt"
 	"io/ioutil"
-	"os"
 	"path/filepath"
 	"runtime"
 	"sort"
@@ -38,8 +37,8 @@ func generateReadMe() {
 	urlPrefix := "https://github.com/Harpsichord1207/GoLeetCode/blob/main/subs/"
 	var subNumbers []int
 	for _, fi := range rd {
-		checkFileLinesCount(dir + "subs" + string(os.PathSeparator) + fi.Name())
-		no := strings.Replace(fi.Name(), ".go", "", -1)
+		checkFileLinesCount(filepath.Join(dir, "subs", fi.Name()))
+		no := strings.ReplaceAll(fi.Name(), ".go", "")
 		noInt, _ := strconv.Atoi(no)
 		subNumbers = append(subNumbers, noInt)
 	}
