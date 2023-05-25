@@ -75,4 +75,5 @@ func main() {
 	fmt.Println("Subs output:")
 	fmt.Println("-------------------------------------")
 	subs.Test1566()
+
 }
