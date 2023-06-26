@@ -74,6 +74,5 @@ func main() {
 	fmt.Println("=====================================")
 	fmt.Println("Subs output:")
 	fmt.Println("-------------------------------------")
-	subs.Test1187()
-
+	subs.Test2462()
 }
